@@ -1,13 +1,13 @@
-const port = process.env.PORT || 5000; 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const nodemailer = require('nodemailer');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import nodemailer from 'nodemailer';
+import multer from 'multer';
+import 'dotenv/config'; // Assurez-vous d'avoir installé le package dotenv
 
+const port = process.env.PORT || 5000;
 const app = express();
-
+const upload = multer({ dest: 'uploads/' });
 
 // Middleware
 app.use(bodyParser.json());
@@ -20,8 +20,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: process.env.EMAIL_USER,      
-    pass: process.env.EMAIL_PASSWORD 
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD
   }
 });
 
@@ -44,17 +44,17 @@ app.post('/send-email', (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Erreur d\'envoi:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         success: false,
         message: 'Erreur lors de l\'envoi de l\'email',
-        error: error.response 
+        error: error.response
       });
     } else {
       console.log('Email envoyé:', info.response);
-      res.status(200).json({ 
+      res.status(200).json({
         success: true,
         message: 'Email envoyé avec succès',
-        info: info.response 
+        info: info.response
       });
     }
   });
@@ -81,17 +81,17 @@ app.post('/send-candidature', upload.single('cv'), (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-      res.status(500).json({ 
+      res.status(500).json({
         success: false,
         message: 'Erreur lors de l\'envoi de l\'email',
-        error: error.response 
+        error: error.response
       });
     } else {
       console.log('Email envoyé: ' + info.response);
-      res.status(200).json({ 
+      res.status(200).json({
         success: true,
         message: 'Email envoyé avec succès',
-        info: info.response 
+        info: info.response
       });
     }
   });
@@ -111,17 +111,17 @@ app.post('/send-devis', (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-      res.status(500).json({ 
+      res.status(500).json({
         success: false,
         message: 'Erreur lors de l\'envoi de l\'email',
-        error: error.response 
+        error: error.response
       });
     } else {
       console.log('Email envoyé: ' + info.response);
-      res.status(200).json({ 
+      res.status(200).json({
         success: true,
         message: 'Email envoyé avec succès',
-        info: info.response 
+        info: info.response
       });
     }
   });
